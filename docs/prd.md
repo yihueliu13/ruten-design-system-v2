@@ -13,7 +13,7 @@ last_updated: 2026-04-24
 
 ## 1. 目標
 
-露天市集三品牌跨平台設計系統（露天 / 一番賞 / 預購）— 解 Figma 綁定 + 設計師難用重建版。
+露天市集三品牌跨平台設計系統（露天 / 一抽入魂 / 預購）— 解 Figma 綁定 + 設計師難用重建版。
 
 **為誰做？**
 - 4 個設計師（主要使用者）
@@ -38,7 +38,7 @@ last_updated: 2026-04-24
 ## 2. 範圍
 
 **MVP 包含**：
-- Token 層：3 份 DESIGN.md（露天主做，一番賞 / 預購建骨架）
+- Token 層：1 份 `DESIGN-shared.md`（通用 ref + sys，跨品牌共用）+ 3 份 `DESIGN-<brand>.md`（露天主做，一抽入魂 / 預購建骨架）
 - 基礎 Component POC：Button / SectionHeader / ProductCard
 - 首個頁面驗證：**分類館首**跨 Web 桌機 + M-Web + App
 - Web Vue 端完整實作
@@ -54,8 +54,8 @@ last_updated: 2026-04-24
 - Figma Code Connect
 - npm package 公開發布
 
-**刻意排除**：
-- 不用 Claude Design（Research Preview，MVP 不賭）
+**刻意排除**（Phase 1）：
+- Claude Design 暫不採用（Phase 2 backlog 評估當 docs site 載體）
 - 不做 Vue / RN 共用 Component（Tamagui / RN Web 都不走）
 - 不動舊 ruten-design-system repo（留 archive）
 

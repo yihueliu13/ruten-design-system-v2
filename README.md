@@ -1,6 +1,6 @@
 # ruten-design-system-v2
 
-> 露天市集三品牌跨平台設計系統（露天 / 一番賞 / 預購）— 解 Figma 綁定 + 設計師難用重建版
+> 露天市集三品牌跨平台設計系統（露天 / 一抽入魂 / 預購）— 解 Figma 綁定 + 設計師難用重建版
 
 ## 快速開始
 看 [`SYSTEM-MANUAL.md`](SYSTEM-MANUAL.md) 了解專案結構與真相來源。

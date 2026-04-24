@@ -9,10 +9,10 @@ last_updated: 2026-04-24
 > 給新成員 / 非技術人員快速理解這個專案在做什麼、怎麼運作、文件放哪。
 
 ## 一句話
-露天市集三品牌跨平台設計系統（露天 / 一番賞 / 預購）— 解 Figma 綁定 + 設計師難用重建版。
+露天市集三品牌跨平台設計系統（露天 / 一抽入魂 / 預購）— 解 Figma 綁定 + 設計師難用重建版。
 
 ## 產出是什麼
-- **3 份 DESIGN.md**（露天 / 一番賞 / 預購）：設計師能讀能改的 markdown token 檔
+- **DESIGN.md 分層**：1 份 `DESIGN-shared.md`（ref + 通用 sys，跨品牌共用）+ 3 份 `DESIGN-<brand>.md`（露天 / 一抽入魂 / 預購，放品牌色 + comp）
 - **1 份 Figma v2 檔**：協作主力（設計師 / 工程 / PO 都在這裡看 + 改）
 - **2 套 Component code**：Vue 3（Web 桌機 + M-Web）/ React Native（App），跨 repo 分發
 - **1 個 Storybook**（Phase 2）：設計師能瀏覽的活文件
@@ -64,7 +64,8 @@ ruten-design-system-v2/
 
 | 要改什麼 | 改哪 | 為什麼 |
 |---------|------|-------|
-| 顏色 / 字型 / 間距 token | `DESIGN-<brand>.md` | 設計師能直接改 |
+| 通用 token（間距 / 圓角 / 陰影 / 尺寸）| `DESIGN-shared.md` | 跨品牌共用的 ref + sys |
+| 品牌色 / 品牌字 token | `DESIGN-<brand>.md` | 三品牌各自獨立的 color + comp |
 | 設計決策、技術規格 | `specs/<domain>/*.md` | 改行為前先改 spec |
 | 產品目標、需求 | `docs/prd.md` | 產品視角單一入口 |
 | 大階段目標 | `docs/roadmap.md` | milestone 規劃 |

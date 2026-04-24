@@ -28,12 +28,13 @@ extends: ~/.claude/docs/project-file-taxonomy.md
 
 | 檔案 | 位置 | 為什麼特殊 |
 |------|------|----------|
-| `DESIGN-<brand>.md` | **根目錄** | Token SOT，設計師 + Kay 直接讀改，不放 docs/ / specs/ |
+| `DESIGN-shared.md` | **根目錄** | 通用 token（ref + sys agnostic），跨品牌共用 |
+| `DESIGN-<brand>.md` | **根目錄** | 品牌專屬 token（color + comp），3 份（露天 / 一抽入魂 / 預購）|
 | 設計稿連結清單 | `docs/reference/figma-files.md` | 列出 v2 主檔 + Archive 舊檔 |
 
 ## 本專案特有規則
 
-1. **DESIGN.md 只有 3 份**（露天 / 一番賞 / 預購），不額外增加。未來若加第 4 品牌要先討論再建。
+1. **DESIGN.md 共 4 份**：1 份 `DESIGN-shared.md`（通用 ref + sys agnostic）+ 3 份 `DESIGN-<brand>.md`（露天 / 一抽入魂 / 預購，各放 color + comp）。未來若加第 4 品牌要先討論再建。
 2. **Component spec 用 .spec.mdx 副檔名**（不是 .md）— 因為 MDX 支援 live demo import。
 3. **跨 repo 分發只 token 發 npm，component 不發**（shadcn-style copy-paste），避免版本地獄。
 4. **不雙向同步 Figma / DESIGN.md**（Phase 1 手動單向 export，Phase 2 才用 Tokens Studio）。

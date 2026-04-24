@@ -33,7 +33,7 @@ specs/
 
 - ❌ 使用者教學 → 放 `docs/reference/`
 - ❌ 變更紀錄 → 放 `docs/changelog/`
-- ❌ Design token 的**實際值** → 放根目錄的 `DESIGN-<brand>.md`
+- ❌ Design token 的**實際值** → 放根目錄的 `DESIGN-shared.md`（通用）或 `DESIGN-<brand>.md`（品牌）
 - ❌ 產品目標 / 需求 → 放 `docs/prd.md`
 
 ## 規則

@@ -8,7 +8,7 @@ last_updated: 2026-04-24
 # ruten-design-system-v2
 
 ## 身份
-你是 ruten-design-system-v2 的 AI 開發夥伴。負責露天市集三品牌跨平台設計系統（露天 / 一番賞 / 預購）— 解 Figma 綁定 + 設計師難用重建版。
+你是 ruten-design-system-v2 的 AI 開發夥伴。負責露天市集三品牌跨平台設計系統（露天 / 一抽入魂 / 預購）— 解 Figma 綁定 + 設計師難用重建版。
 
 ## 啟動協議
 每次對話開始，依序執行（不可跳過）：
@@ -40,12 +40,13 @@ last_updated: 2026-04-24
 | 設計規格 | `specs/<domain>/*.md` | 改行為前必讀對應 spec |
 | 文件分類規則 | `specs/_taxonomy.md` | 繼承全域 taxonomy + 本專案補充 |
 | 每日進度 | MEMORY 內 `daily_log.md` | 跨對話讀取，不在專案根 |
-| **Token SOT** | `DESIGN-ruten.md` / `DESIGN-ichiban.md` / `DESIGN-resell.md` | 設計師 + Kay 協作編輯，export 餵 Vue / RN |
+| **Token SOT** | `DESIGN-shared.md`（ref + sys agnostic 通用）+ `DESIGN-<brand>.md`（露天 / 一抽入魂 / 預購 各自 color + comp） | 設計師 + Kay 協作編輯，export 餵 Vue / RN |
 
 ## 依任務加讀（動手前必須先讀完相關 spec，不可憑記憶改）
 | 任務類型 | 必讀檔案 |
 |---------|---------|
-| 改 design token | `DESIGN-<brand>.md` + `specs/tokens/*.md` |
+| 改通用 token（間距 / 圓角 / 陰影）| `DESIGN-shared.md` + `specs/tokens/*.md` |
+| 改品牌 token（色彩 / 品牌字）| `DESIGN-<brand>.md` + `specs/tokens/*.md` |
 | 改 component | `specs/components/<name>.spec.mdx` |
 | 調整架構 | `specs/architecture.md` |
 | 跨平台一致性 | `specs/cross-platform-parity.md` |
@@ -57,7 +58,7 @@ last_updated: 2026-04-24
 ## 改完必做
 | 檢查項 | 方法 |
 |--------|------|
-| DESIGN.md lint | `npx @google/design.md lint DESIGN-<brand>.md` |
+| DESIGN.md lint | `npx @google/design.md lint DESIGN-shared.md DESIGN-<brand>.md` |
 | Token 跨平台一致 | 檢查 Web / RN 都吃到同 token |
 | 變數 / 欄位零殘留 | grep 全專案 |
 
@@ -70,7 +71,7 @@ last_updated: 2026-04-24
 
 ## 特殊規則
 1. **Token 跨 repo 分發**：Vue repo / RN repo 各自 `npm install @ruten/design-tokens`。Component code 不做 npm package（shadcn-style copy-paste，各 repo 擁有自己的 code）
-2. **三品牌 Hybrid**：共用 token 結構 + 換色（露天橘 / 一番賞藍 / 預購主色），基礎 Component 100% 共用，業務 Component 各自獨立（抽賞 / 預購倒數 / 拍賣競標）
+2. **三品牌 Hybrid**：共用 token 結構 + 換色（露天橘 / 一抽入魂藍 / 預購主色），基礎 Component 100% 共用，業務 Component 各自獨立（抽賞 / 預購倒數 / 拍賣競標）
 3. **Figma 為協作主力**：設計師 / 工程 / PO 都在 Figma 協作，Storybook 後做（Phase 2）。Figma 是展示 + 協作，DESIGN.md 是工程 / AI 吃的 SOT
 4. **MVP 策略**：分類館首頁跨 Web 桌機 + M-Web + App 三平台；Web Vue 完整做，App RN 只做 POC（Token 接上 + 1-2 組件，等 RN 升 0.78 完成再擴展）
 
