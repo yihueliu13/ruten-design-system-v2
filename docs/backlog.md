@@ -14,9 +14,12 @@ last_updated: 2026-04-24
 | 狀態 | 項目 | 建立 | 備註 |
 |------|------|------|------|
 | ✅ | 寫 brainstorming 紀錄 `docs/changelog/2026-04-24-brainstorming.md` | 2026-04-24 | 已完成，見歸檔 |
-| ⬜ | 新建 Figma v2 檔「Ruten Design System v2」 | 2026-04-24 | 舊 DS 測試檔改名 `[ARCHIVE]` |
-| ⬜ | 現有 686 tokens 匯出成 DESIGN-ruten.md | 2026-04-24 | 寫 migration script |
-| ✅ | 確認 `packages/` monorepo 工具（pnpm / turbo？） | 2026-04-24 | **結論：Phase 1 不用 monorepo，單 package + pnpm（純安裝器）。Storybook / docs / CLI 全延後 Phase 2** |
+| ✅ | 確認 `packages/` monorepo 工具 | 2026-04-24 | 結論：不用 monorepo，單 package + pnpm（純安裝器） |
+| ✅ | 確認 DESIGN.md 架構決策 | 2026-04-24 | 分層 B（shared + brand）+ 格式 B（保留 ref/sys/comp + spec 擴展）+ locked decisions 另建 v2 新檔 |
+| ⬜ | 新建 Figma v2 檔「Ruten Design System v2」 | 2026-04-24 | 舊 DS 測試檔改名 `[ARCHIVE]`（Kay 手動）|
+| ⬜ | 寫 `specs/governance/locked-decisions.md`（v1 12 條 locked decisions 抄入）| 2026-04-24 | 分設計 6 條 / 工程 6 條兩段；DESIGN-ruten.md Do's and Don'ts 用 @path 引用此檔 |
+| ⬜ | 寫 migration script：v1 JSON → DESIGN-shared.md（284）+ DESIGN-ruten.md（402）| 2026-04-24 | 架構已拍板，明天動手；Python 讀 `~/Desktop/Kay/ruten-design-system/design-system-all.json` |
+| ⬜ | 驗證 tokens 總數 686（284 + 402）| 2026-04-24 | Phase 1 先不跑 `@google/design.md lint`（跨檔引用 Phase 2 補合併 script） |
 
 ## 🟡 P1（次週 / 穩定後做）
 
