@@ -1,5 +1,7 @@
 <script setup>
-defineProps({
+import { computed } from 'vue'
+
+const props = defineProps({
   name: {
     type: String,
     required: true,
@@ -47,16 +49,25 @@ const icons = {
     rotate: -90,
   },
 }
+
+// SVG width/height HTML attribute 不接受 CSS variables（var(...)）。
+// 改用 CSS style，才能 resolve --comp-button-{size}-icon-size。
+const sizeStyle = computed(() => {
+  const v = typeof props.size === 'number' ? `${props.size}px` : props.size
+  const style = { width: v, height: v, flexShrink: 0 }
+  if (icons[props.name].rotate) {
+    style.transform = `rotate(${icons[props.name].rotate}deg)`
+  }
+  return style
+})
 </script>
 
 <template>
   <svg
-    :width="size"
-    :height="size"
     :viewBox="icons[name].viewBox"
     fill="currentColor"
     preserveAspectRatio="xMidYMid meet"
-    :style="icons[name].rotate ? { transform: `rotate(${icons[name].rotate}deg)` } : {}"
+    :style="sizeStyle"
     aria-hidden="true"
   >
     <path
