@@ -1,6 +1,26 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
 
+/* Tailwind v4 @theme — 把 sys.color 接進 Tailwind theme tokens
+   讓 utility class（bg-primary / text-on-surface 等）吃 v1 token chain */
+@theme {
+  --color-primary: var(--sys-color-primary);
+  --color-on-primary: var(--sys-color-on-primary);
+  --color-secondary: var(--sys-color-secondary);
+  --color-surface: var(--sys-color-surface);
+  --color-on-surface: var(--sys-color-on-surface);
+  --color-on-surface-variant: var(--sys-color-on-surface-variant);
+  --color-surface-brand: var(--sys-color-surface-brand);
+  --color-surface-brand-dim: var(--sys-color-surface-brand-dim);
+  --color-price: var(--sys-color-price);
+  --color-on-price: var(--sys-color-on-price);
+  --color-error: var(--sys-color-error);
+  --color-on-error: var(--sys-color-on-error);
+  --color-success: var(--sys-color-success);
+  --color-warning: var(--sys-color-warning);
+  --color-info: var(--sys-color-info);
+}
+
 body {
   font-family:
     var(--sys-typography-font-family-primary),
