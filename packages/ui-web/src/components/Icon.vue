@@ -11,42 +11,49 @@ const props = defineProps({
 })
 
 // SVG paths exported from Figma source file JntRm8aTeyw1HPdowgSBk4
-// (outline/plus 45:19929, outline/search 45:19505, outline/close 45:19935,
-//  outline/heart 45:19515, outline/arrow-right-large 45:19952)
-// fill 改成 currentColor 讓 button text-color 自動繼承
+// Figma 設計每個 icon 在 24×24 frame 內 + 內部留白（inset）。
+// path bbox 是緊邊（如 plus 16×16），不是 frame 24×24。
+// 為了忠實對齊 Figma 視覺，svg viewBox 統一 24×24，
+// 用 <g transform="translate"> 把 path 放在 Figma 設計的 inset 位置。
+// Inset offset 從 Figma React code 抽出（inset percentage × 24）。
 const icons = {
+  // plus (45:19929) — Figma inset 16.67% all sides → translate(4, 4)
   plus: {
-    viewBox: '0 0 16 16',
+    transform: 'translate(4 4)',
     paths: [
       'M8.88889 0.888889C8.88889 0.397969 8.49092 0 8 0C7.50908 0 7.11111 0.397969 7.11111 0.888889L7.11111 7.11111L0.888889 7.11111C0.39797 7.11111 0 7.50908 0 8C0 8.49092 0.39797 8.88889 0.888889 8.88889L7.11111 8.88889L7.11111 15.1111C7.11111 15.602 7.50908 16 8 16C8.49092 16 8.88889 15.602 8.88889 15.1111V8.88889L15.1111 8.88889C15.602 8.88889 16 8.49092 16 8C16 7.50908 15.602 7.11111 15.1111 7.11111L8.88889 7.11111V0.888889Z',
     ],
   },
+  // search (45:19505) — inset top/left 8.33% (=2), right 10.77% (=2.585), bottom 12.5% (=3) → translate(2, 2)
   search: {
-    viewBox: '0 0 19.4142 19',
+    transform: 'translate(2 2)',
     paths: [
       'M8.5 15C12.0899 15 15 12.0899 15 8.5C15 4.91015 12.0899 2 8.5 2C4.91015 2 2 4.91015 2 8.5C2 12.0899 4.91015 15 8.5 15ZM8.5 17C13.1944 17 17 13.1944 17 8.5C17 3.80558 13.1944 0 8.5 0C3.80558 0 0 3.80558 0 8.5C0 13.1944 3.80558 17 8.5 17Z',
       'M13.7071 13.2929C14.0976 12.9024 14.7308 12.9024 15.1213 13.2929L18.7071 16.8787C19.0976 17.2692 19.0976 17.9024 18.7071 18.2929C18.3166 18.6834 17.6834 18.6834 17.2929 18.2929L13.7071 14.7071C13.3166 14.3166 13.3166 13.6834 13.7071 13.2929Z',
     ],
   },
+  // close (45:19935) — inset 22.56% top/left, 21.97% right/bottom → translate(5.414, 5.414)
   close: {
-    viewBox: '0 0 13.3137 13.3138',
+    transform: 'translate(5.414 5.414)',
     paths: [
       'M11.6066 13.0208C11.9972 13.4113 12.6303 13.4113 13.0208 13.0208C13.4114 12.6303 13.4114 11.9971 13.0208 11.6066L8.07112 6.65688L13.0208 1.70719C13.4113 1.31666 13.4113 0.683496 13.0208 0.292972C12.6303 -0.0975525 11.9971 -0.0975525 11.6066 0.292972L6.65691 5.24266L1.70714 0.292893C1.31661 -0.0976308 0.683448 -0.0976312 0.292924 0.292893C-0.0976002 0.683417 -0.0975999 1.31658 0.292924 1.70711L5.24269 6.65688L0.292893 11.6067C-0.0976308 11.9972 -0.0976312 12.6304 0.292893 13.0209C0.683417 13.4114 1.31658 13.4114 1.70711 13.0209L6.65691 8.07109L11.6066 13.0208Z',
     ],
   },
+  // heart (45:19515) — inset top 12.5% (=3), left 8.33% (=2), right 8.42% (=2.021), bottom 8.33% (=2) → translate(2, 3)
   heart: {
-    viewBox: '0 0 19.9782 19',
+    transform: 'translate(2 3)',
     paths: [
       'M9.99777 16.6214C11.846 15.4048 13.5765 14.0105 15.1652 12.4571C16.2917 11.3313 17.1547 9.95852 17.6871 8.44087C18.5763 5.64044 17.4246 2.96093 15.0833 2.1938C13.7575 1.78209 12.3153 2.037 11.1991 2.88938L9.98435 3.81696L8.7703 2.88851C7.65498 2.03556 6.21291 1.7808 4.88794 2.19358C2.55057 2.95897 1.40205 5.63425 2.29161 8.43874C2.82885 9.95821 3.69769 11.3313 4.8304 12.4555C6.41764 14.011 8.14829 15.406 9.99777 16.6214ZM3.4261 13.8796C2.06871 12.5338 1.03207 10.8905 0.395373 9.07526C-0.742259 5.53523 0.582016 1.48948 4.27932 0.288396C6.23083 -0.324469 8.35326 0.0517545 9.98525 1.29983C11.6178 0.0531503 13.7396 -0.322951 15.6912 0.288396C19.3885 1.48948 20.7217 5.53523 19.584 9.07526C18.9525 10.8888 17.922 12.5319 16.5711 13.8796C14.6466 15.7625 12.5245 17.4251 10.243 18.8374L9.99414 19L9.75417 18.8374C7.47113 17.4273 5.34883 15.7645 3.4261 13.8796Z',
     ],
   },
-  // Figma source 是 down 方向 + rotate -90 變 right（Figma 設計實踐）
+  // arrow-right (45:19952) — Figma 設計：down arrow + rotate -90 → right
+  // path bbox 18×9.5 (down arrow shape). Inset 在 24×24 frame: top/bottom 3, right 7.498, left 7
+  // 內框 (10×18 旋轉前) → 旋轉後仍要置中：先把 path center (9, 4.75) 移到 frame center (12, 12)，再 rotate -90
   'arrow-right': {
-    viewBox: '0 0 18 9.50294',
+    transform: 'translate(12 12) rotate(-90) translate(-9 -4.75)',
     paths: [
       'M0.292893 0.292893C0.683418 -0.0976311 1.31658 -0.0976311 1.70711 0.292893L8.85858 7.44437C8.93668 7.52247 9.06332 7.52247 9.14142 7.44437L16.2929 0.292893C16.6834 -0.0976311 17.3166 -0.0976311 17.7071 0.292893C18.0976 0.683418 18.0976 1.31658 17.7071 1.70711L10.5556 8.85858C9.69648 9.71773 8.30352 9.71773 7.44437 8.85858L0.292893 1.70711C-0.0976311 1.31658 -0.0976311 0.683418 0.292893 0.292893Z',
     ],
-    rotate: -90,
   },
 }
 
@@ -54,28 +61,26 @@ const icons = {
 // 改用 CSS style，才能 resolve --comp-button-{size}-icon-size。
 const sizeStyle = computed(() => {
   const v = typeof props.size === 'number' ? `${props.size}px` : props.size
-  const style = { width: v, height: v, flexShrink: 0 }
-  if (icons[props.name].rotate) {
-    style.transform = `rotate(${icons[props.name].rotate}deg)`
-  }
-  return style
+  return { width: v, height: v, flexShrink: 0 }
 })
 </script>
 
 <template>
   <svg
-    :viewBox="icons[name].viewBox"
+    viewBox="0 0 24 24"
     fill="currentColor"
     preserveAspectRatio="xMidYMid meet"
     :style="sizeStyle"
     aria-hidden="true"
   >
-    <path
-      v-for="(d, i) in icons[name].paths"
-      :key="i"
-      fill-rule="evenodd"
-      clip-rule="evenodd"
-      :d="d"
-    />
+    <g :transform="icons[name].transform">
+      <path
+        v-for="(d, i) in icons[name].paths"
+        :key="i"
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        :d="d"
+      />
+    </g>
   </svg>
 </template>
