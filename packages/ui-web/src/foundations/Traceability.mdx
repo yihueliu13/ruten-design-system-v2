@@ -1,0 +1,52 @@
+import { Meta } from '@storybook/addon-docs/blocks'
+
+<Meta title="Foundations/Traceability" />
+
+# Truth Chain Traceability
+
+Storybook M1 — 第一條完整 truth chain 的視覺檢視介面。
+
+## 資料流（縱向）
+
+```
+Figma source (file: JntRm8aTeyw1HPdowgSBk4)
+  ↓ export
+v1 design-system-all.tokens.json (681 tokens, DTCG)
+  ↓ tools/build-tokens.py
+DESIGN-shared.md  (人讀 SOT, 352 tokens)
+tokens.css        (CSS variables, runtime build artifact)
+  ↓ var(--xxx)
+Vue runtime (Button.vue, Icon.vue)
+  ↓
+Storybook（你正在看的這個）
+```
+
+## 對應 Figma source nodes
+
+| Storybook 內容 | Figma node |
+|---------------|-----------|
+| Foundations/Color | sys.color tokens（無單一 frame，散在各 component） |
+| Foundations/Typography | ref.typography.font-size scale |
+| Foundations/Spacing | sys.spacing scale |
+| Components/Button | `144:2895`（4 variant × 4 size × 3 form matrix） |
+| Icon plus | `45:19929` |
+| Icon search | `45:19505` |
+| Icon close | `45:19935` |
+| Icon heart | `45:19515` |
+| Icon arrow-right | `45:19952` |
+
+## Reality verification 紀錄
+
+詳見 [`docs/changelog/2026-05-08-button-runtime-verification.md`](../../docs/changelog/2026-05-08-button-runtime-verification.md)。
+
+13 屬性 × 4 size + 80 buttons border-radius audit 全通過。
+
+## 不在 Storybook M1 範圍
+
+- Chromatic / 視覺 regression（Phase 2）
+- 完整 docs site 美化
+- 新 component（只展示 Button）
+- 完整 a11y test suite
+- 多語言 / RTL 切換
+
+範圍精神：**讓第一條 truth chain 可被團隊打開檢視**，不做 platform 化。
