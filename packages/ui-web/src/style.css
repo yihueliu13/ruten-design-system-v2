@@ -1,2 +1,9 @@
 @import "tailwindcss";
 @import "./styles/tokens.css";
+
+body {
+  font-family:
+    var(--sys-typography-font-family-primary),
+    var(--sys-typography-font-family-english),
+    var(--ref-typography-font-family-fallback);
+}
