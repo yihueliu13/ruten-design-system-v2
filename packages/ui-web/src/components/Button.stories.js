@@ -49,9 +49,7 @@ const SIZES = ['sm', 'md', 'lg', 'xl']
 export const Playground = {
   render: (args) => ({
     components: { Button },
-    setup() {
-      return { args }
-    },
+    setup() { return { args } },
     template: `<Button v-bind="args">{{ args.label }}</Button>`,
   }),
 }
@@ -60,11 +58,9 @@ export const Variants = {
   name: '4 Variants',
   render: () => ({
     components: { Button },
-    setup() {
-      return { variants: VARIANTS }
-    },
+    setup() { return { variants: VARIANTS } },
     template: `
-      <div style="display: flex; gap: 1rem;">
+      <div class="flex gap-4">
         <Button v-for="v in variants" :key="v" :variant="v">{{ v }}</Button>
       </div>
     `,
@@ -75,11 +71,9 @@ export const Sizes = {
   name: '4 Sizes',
   render: () => ({
     components: { Button },
-    setup() {
-      return { sizes: SIZES }
-    },
+    setup() { return { sizes: SIZES } },
     template: `
-      <div style="display: flex; gap: 1rem; align-items: center;">
+      <div class="flex gap-4 items-center">
         <Button v-for="s in sizes" :key="s" :size="s">{{ s }}</Button>
       </div>
     `,
@@ -90,13 +84,11 @@ export const FullMatrix = {
   name: 'Full matrix (variant × size)',
   render: () => ({
     components: { Button },
-    setup() {
-      return { variants: VARIANTS, sizes: SIZES }
-    },
+    setup() { return { variants: VARIANTS, sizes: SIZES } },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-        <div v-for="v in variants" :key="v" style="display: flex; gap: 1rem; align-items: center;">
-          <code style="font-size: 12px; width: 80px; color: #666;">{{ v }}</code>
+      <div class="flex flex-col gap-3">
+        <div v-for="v in variants" :key="v" class="flex gap-4 items-center">
+          <code class="text-xs w-20 text-gray-500">{{ v }}</code>
           <Button v-for="s in sizes" :key="s" :variant="v" :size="s">Button</Button>
         </div>
       </div>
@@ -109,7 +101,7 @@ export const FormVariants = {
   render: () => ({
     components: { Button },
     template: `
-      <div style="display: flex; gap: 1rem; align-items: center;">
+      <div class="flex gap-4 items-center">
         <Button>label</Button>
         <Button iconLeft="plus">icon-label</Button>
         <Button iconRight="arrow-right">label-icon</Button>
@@ -122,11 +114,9 @@ export const FormVariants = {
 export const Disabled = {
   render: () => ({
     components: { Button },
-    setup() {
-      return { variants: VARIANTS }
-    },
+    setup() { return { variants: VARIANTS } },
     template: `
-      <div style="display: flex; gap: 1rem;">
+      <div class="flex gap-4">
         <Button v-for="v in variants" :key="v" :variant="v" disabled iconLeft="plus">{{ v }}</Button>
       </div>
     `,
@@ -145,15 +135,13 @@ export const IconCurrentColor = {
   },
   render: () => ({
     components: { Button },
-    setup() {
-      return { variants: VARIANTS }
-    },
+    setup() { return { variants: VARIANTS } },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div style="display: flex; gap: 1rem;">
+      <div class="flex flex-col gap-4">
+        <div class="flex gap-4">
           <Button v-for="v in variants" :key="v" :variant="v" iconLeft="heart">Favorite</Button>
         </div>
-        <div style="display: flex; gap: 1rem;">
+        <div class="flex gap-4">
           <Button v-for="v in variants" :key="v" :variant="v" iconOnly="search" />
         </div>
       </div>

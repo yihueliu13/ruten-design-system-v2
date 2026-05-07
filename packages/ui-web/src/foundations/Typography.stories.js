@@ -43,15 +43,22 @@ const WEIGHTS = [
 export const FontScale = {
   name: 'sys.typography (scale)',
   render: () => ({
-    setup() {
-      return { scale: SCALE }
-    },
+    setup() { return { scale: SCALE } },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div v-for="item in scale" :key="item.name" style="display: flex; gap: 1.5rem; align-items: baseline; padding-bottom: 0.5rem; border-bottom: 1px solid #f3f4f6;">
-          <code style="font-size: 12px; width: 140px; color: #666; flex-shrink: 0;">{{ item.name }}</code>
-          <code style="font-size: 12px; width: 50px; color: #999; flex-shrink: 0;">{{ item.size }}px</code>
-          <div :style="{ fontSize: 'var(--sys-typography-' + item.name.replace('.', '-') + ')', lineHeight: 1.4 }">露天設計系統 Ruten DS — Aa Bb 123</div>
+      <div class="flex flex-col gap-4">
+        <div
+          v-for="item in scale"
+          :key="item.name"
+          class="flex gap-6 items-baseline pb-2 border-b border-gray-100"
+        >
+          <code class="text-xs w-36 text-gray-500 shrink-0">{{ item.name }}</code>
+          <code class="text-xs w-12 text-gray-400 shrink-0">{{ item.size }}px</code>
+          <div
+            class="leading-snug"
+            :style="{ fontSize: 'var(--sys-typography-' + item.name.replace('.', '-') + ')' }"
+          >
+            露天設計系統 Ruten DS — Aa Bb 123
+          </div>
         </div>
       </div>
     `,
@@ -61,15 +68,18 @@ export const FontScale = {
 export const FontWeight = {
   name: 'sys.typography.weight',
   render: () => ({
-    setup() {
-      return { weights: WEIGHTS }
-    },
+    setup() { return { weights: WEIGHTS } },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 1rem;">
-        <div v-for="w in weights" :key="w.name" style="display: flex; gap: 1.5rem; align-items: baseline;">
-          <code style="font-size: 12px; width: 140px; color: #666; flex-shrink: 0;">weight.{{ w.name }}</code>
-          <code style="font-size: 12px; width: 50px; color: #999;">{{ w.value }}</code>
-          <div :style="{ fontWeight: 'var(--sys-typography-weight-' + w.name + ')', fontSize: '18px' }">露天設計系統 Ruten DS — Aa Bb 123</div>
+      <div class="flex flex-col gap-4">
+        <div v-for="w in weights" :key="w.name" class="flex gap-6 items-baseline">
+          <code class="text-xs w-36 text-gray-500 shrink-0">weight.{{ w.name }}</code>
+          <code class="text-xs w-12 text-gray-400">{{ w.value }}</code>
+          <div
+            class="text-lg"
+            :style="{ fontWeight: 'var(--sys-typography-weight-' + w.name + ')' }"
+          >
+            露天設計系統 Ruten DS — Aa Bb 123
+          </div>
         </div>
       </div>
     `,
@@ -80,16 +90,16 @@ export const FontFamily = {
   name: 'sys.typography.font-family',
   render: () => ({
     template: `
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div class="flex flex-col gap-6">
         <div>
-          <code style="font-size: 12px; color: #666;">sys.typography.font-family.primary</code>
-          <div style="font-family: var(--sys-typography-font-family-primary); font-size: 24px; margin-top: 0.5rem;">
+          <code class="text-xs text-gray-500">sys.typography.font-family.primary</code>
+          <div class="text-2xl mt-2" style="font-family: var(--sys-typography-font-family-primary);">
             PingFang TC — 露天市集 一抽入魂 預購
           </div>
         </div>
         <div>
-          <code style="font-size: 12px; color: #666;">sys.typography.font-family.english</code>
-          <div style="font-family: var(--sys-typography-font-family-english); font-size: 24px; margin-top: 0.5rem;">
+          <code class="text-xs text-gray-500">sys.typography.font-family.english</code>
+          <div class="text-2xl mt-2" style="font-family: var(--sys-typography-font-family-english);">
             SF Pro — Ruten Design System v2
           </div>
         </div>

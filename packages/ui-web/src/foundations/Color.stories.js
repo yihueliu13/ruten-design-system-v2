@@ -13,21 +13,9 @@ export default {
 }
 
 const SYS_COLORS = [
-  'primary',
-  'on-primary',
-  'secondary',
-  'surface',
-  'on-surface',
-  'on-surface-variant',
-  'surface-brand',
-  'surface-brand-dim',
-  'price',
-  'on-price',
-  'error',
-  'on-error',
-  'success',
-  'warning',
-  'info',
+  'primary', 'on-primary', 'secondary', 'surface', 'on-surface', 'on-surface-variant',
+  'surface-brand', 'surface-brand-dim', 'price', 'on-price',
+  'error', 'on-error', 'success', 'warning', 'info',
 ]
 
 const REF_RAMPS = [
@@ -36,13 +24,11 @@ const REF_RAMPS = [
   { hue: 'red', steps: ['50', '100', '300', '500', '700'] },
 ]
 
-// CSS var name → token-like path（friendly display）
 function cssVarLabel(cssVar) {
   const m = cssVar.match(/^--(ref|sys|comp)-([a-z]+)-(.+)$/)
   return m ? `${m[1]}.${m[2]}.${m[3]}` : cssVar
 }
 
-// 從 :root CSSStyleRule 讀 alias source（CSS variables 的原始字串，含 var(...) 形式）
 function readAliasMap() {
   const map = {}
   for (const sheet of document.styleSheets) {
@@ -59,9 +45,7 @@ function readAliasMap() {
           }
         }
       }
-    } catch (e) {
-      // CORS or other access error — skip
-    }
+    } catch (e) {}
   }
   return map
 }
@@ -71,14 +55,10 @@ export const SysColor = {
   render: () => ({
     setup() {
       const aliasMap = ref({})
-
-      onMounted(() => {
-        aliasMap.value = readAliasMap()
-      })
+      onMounted(() => { aliasMap.value = readAliasMap() })
 
       const getAliasTarget = (sysName) => {
-        const cssVar = `--sys-color-${sysName}`
-        const source = aliasMap.value[cssVar]
+        const source = aliasMap.value[`--sys-color-${sysName}`]
         if (!source) return null
         const m = source.match(/^var\((--[\w-]+)\)/)
         if (m) return { type: 'alias', label: cssVarLabel(m[1]) }
@@ -88,50 +68,39 @@ export const SysColor = {
       const getResolved = (sysName) => {
         if (typeof window === 'undefined') return ''
         return getComputedStyle(document.documentElement)
-          .getPropertyValue(`--sys-color-${sysName}`)
-          .trim()
+          .getPropertyValue(`--sys-color-${sysName}`).trim()
       }
 
       return { colors: SYS_COLORS, getAliasTarget, getResolved }
     },
     template: `
-      <div>
-        <p style="font-size: 12px; color: #6b7280; margin-bottom: 1rem; line-height: 1.6;">
+      <div class="space-y-4">
+        <p class="text-xs text-gray-500 leading-relaxed">
           每個 sys color 顯示三層 traceability：<br />
-          <strong>sys path</strong> → <strong>ref alias target</strong> → <strong>runtime resolved value</strong>。<br />
-          資料源：browser CSSOM（<code>document.styleSheets</code> + <code>getComputedStyle</code>）。
+          <strong class="text-gray-700">sys path</strong> → <strong class="text-gray-700">ref alias target</strong> → <strong class="text-gray-700">runtime resolved value</strong>。<br />
+          資料源：browser CSSOM（<code class="text-gray-700">document.styleSheets</code> + <code class="text-gray-700">getComputedStyle</code>）。
         </p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem;">
+        <div class="grid grid-cols-[repeat(auto-fill,minmax(360px,1fr))] gap-4">
           <div
             v-for="name in colors"
             :key="name"
-            style="display: grid; grid-template-columns: 80px 1fr; gap: 1rem; align-items: center; padding: 0.75rem; border: 1px solid #e5e7eb; border-radius: 8px;"
+            class="grid grid-cols-[80px_1fr] gap-4 items-center p-3 border border-gray-200 rounded-lg"
           >
             <div
-              :style="{
-                background: 'var(--sys-color-' + name + ')',
-                height: '64px',
-                borderRadius: '6px',
-                border: '1px solid #e5e7eb',
-              }"
+              class="h-16 rounded-md border border-gray-200"
+              :style="{ background: 'var(--sys-color-' + name + ')' }"
             ></div>
-            <div style="display: flex; flex-direction: column; gap: 4px; font-size: 11px; line-height: 1.5; min-width: 0;">
-              <code style="color: #1f2937; font-weight: 600;">sys.color.{{ name }}</code>
-              <code v-if="getAliasTarget(name)?.type === 'alias'" style="color: #6b7280;">
+            <div class="flex flex-col gap-1 text-[11px] leading-normal min-w-0">
+              <code class="text-gray-800 font-semibold">sys.color.{{ name }}</code>
+              <code v-if="getAliasTarget(name)?.type === 'alias'" class="text-gray-500">
                 → {{ getAliasTarget(name).label }}
               </code>
-              <code v-else-if="getAliasTarget(name)?.type === 'hardcoded'" style="color: #d97706;">
+              <code v-else-if="getAliasTarget(name)?.type === 'hardcoded'" class="text-amber-600">
                 ⚠️ hardcoded: {{ getAliasTarget(name).label }}
               </code>
-              <code v-else style="color: #dc2626;">
-                ❌ unresolved alias source
-              </code>
-              <code v-if="getResolved(name)" style="color: #9ca3af;">
-                = {{ getResolved(name) }}
-              </code>
-              <code v-else style="color: #dc2626;">
-                ❌ no resolved value
-              </code>
+              <code v-else class="text-red-600">❌ unresolved alias source</code>
+              <code v-if="getResolved(name)" class="text-gray-400">= {{ getResolved(name) }}</code>
+              <code v-else class="text-red-600">❌ no resolved value</code>
             </div>
           </div>
         </div>
@@ -147,18 +116,16 @@ export const RefColor = {
       return { ramps: REF_RAMPS }
     },
     template: `
-      <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+      <div class="flex flex-col gap-6">
         <div v-for="ramp in ramps" :key="ramp.hue">
-          <h3 style="font-size: 14px; font-weight: 600; margin-bottom: 0.5rem;">{{ ramp.hue }}</h3>
-          <div style="display: flex; gap: 0.5rem;">
-            <div v-for="step in ramp.steps" :key="step" style="flex: 1;">
-              <div :style="{
-                background: 'var(--ref-color-' + ramp.hue + '-' + step + ')',
-                height: '56px',
-                borderRadius: '4px',
-                border: '1px solid #e5e7eb',
-              }"></div>
-              <code style="font-size: 11px; color: #666;">{{ step }}</code>
+          <h3 class="text-sm font-semibold mb-2">{{ ramp.hue }}</h3>
+          <div class="flex gap-2">
+            <div v-for="step in ramp.steps" :key="step" class="flex-1">
+              <div
+                class="h-14 rounded border border-gray-200"
+                :style="{ background: 'var(--ref-color-' + ramp.hue + '-' + step + ')' }"
+              ></div>
+              <code class="text-[11px] text-gray-500">{{ step }}</code>
             </div>
           </div>
         </div>
