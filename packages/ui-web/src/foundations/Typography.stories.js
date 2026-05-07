@@ -1,3 +1,5 @@
+import { ref, onMounted } from 'vue'
+
 export default {
   title: 'Foundations/Typography',
   parameters: {
@@ -104,6 +106,74 @@ export const FontFamily = {
           </div>
         </div>
       </div>
+    `,
+  }),
+}
+
+const TYPOGRAPHY_TOKENS = [
+  ...SCALE.map(s => `--sys-typography-${s.name.replace('.', '-')}`),
+  ...WEIGHTS.map(w => `--sys-typography-weight-${w.name}`),
+  '--sys-typography-font-family-primary',
+  '--sys-typography-font-family-english',
+]
+
+export const RuntimeNote = {
+  name: 'Runtime Note',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Foundation Runtime Surface — Typography token chain runtime status + how Button consumes it.',
+      },
+    },
+  },
+  render: () => ({
+    setup() {
+      const stats = ref({
+        scale: SCALE.length,
+        weight: WEIGHTS.length,
+        family: 2,
+        unresolved: [],
+      })
+      onMounted(() => {
+        const cs = getComputedStyle(document.documentElement)
+        const unresolved = TYPOGRAPHY_TOKENS.filter(t => !cs.getPropertyValue(t).trim())
+        stats.value = {
+          scale: SCALE.length,
+          weight: WEIGHTS.length,
+          family: 2,
+          total: TYPOGRAPHY_TOKENS.length,
+          unresolved,
+        }
+      })
+      return { stats }
+    },
+    template: `
+      <pre class="text-[11px] text-gray-500 leading-relaxed p-3 bg-gray-50 rounded font-mono whitespace-pre-wrap">Token chain:
+  sys.typography.{display,headline,title,body,label}.* → ref.typography.font-size.* → px
+  sys.typography.weight.{regular,medium,semibold,bold} → ref.typography.font-weight.* → 400/500/600/700
+  sys.typography.font-family.{primary,english} → ref.typography.font-family.* → "PingFang TC" / "SF Pro"
+
+Build pipeline:
+  v1 design-system-all.tokens.json
+  → tools/build-tokens.py (unitless 處理 weight)
+  → tokens.css CSS variables
+  → body { font-family: var(--sys-typography-font-family-primary), ... }
+
+Runtime status:
+  font-size scale tokens: {{ stats.scale }}
+  font-weight tokens: {{ stats.weight }}
+  font-family tokens: {{ stats.family }}
+  total: {{ stats.total }}
+  {{ stats.unresolved.length > 0 ? '❌ unresolved: ' + stats.unresolved.join(', ') : '✅ all resolved' }}
+
+Used by Button (arbitrary value via comp.button.{size}.font-size chain):
+  - sm: comp.button.sm.font-size → sys.typography.label.md → 12px
+  - md: comp.button.md.font-size → sys.typography.label.lg → 14px
+  - lg: comp.button.lg.font-size → sys.typography.title.sm → 14px
+  - xl: comp.button.xl.font-size → sys.typography.title.md → 16px
+  - font-weight: comp.button.font-weight → sys.typography.weight.semibold → 600
+  - font-family: page-level body inherit (PingFang TC + SF Pro)</pre>
     `,
   }),
 }

@@ -133,3 +133,66 @@ export const RefColor = {
     `,
   }),
 }
+
+export const RuntimeNote = {
+  name: 'Runtime Note',
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'Foundation Runtime Surface — Color token chain runtime status + how Button consumes it.',
+      },
+    },
+  },
+  render: () => ({
+    setup() {
+      const stats = ref({ total: SYS_COLORS.length, resolved: 0, unresolved: [], hardcoded: [] })
+      onMounted(() => {
+        const map = readAliasMap()
+        const unresolved = []
+        const hardcoded = []
+        SYS_COLORS.forEach(name => {
+          const source = map[`--sys-color-${name}`]
+          if (!source) {
+            unresolved.push(name)
+          } else if (!source.match(/^var\(/)) {
+            hardcoded.push(name)
+          }
+        })
+        stats.value = {
+          total: SYS_COLORS.length,
+          resolved: SYS_COLORS.length - unresolved.length - hardcoded.length,
+          unresolved,
+          hardcoded,
+        }
+      })
+      return { stats }
+    },
+    template: `
+      <pre class="text-[11px] text-gray-500 leading-relaxed p-3 bg-gray-50 rounded font-mono whitespace-pre-wrap">Token chain:
+  sys.color.* (15 semantic) → ref.color.* (atomic ramp) → hex
+
+Build pipeline:
+  v1 design-system-all.tokens.json
+  → tools/build-tokens.py
+  → packages/ui-web/src/styles/tokens.css (CSS variables)
+  → @theme bridge in style.css (sys.color → Tailwind theme)
+  → Tailwind utility: bg-primary / text-on-surface / border-primary 等
+
+Runtime status (browser CSSOM check):
+  sys.color total: {{ stats.total }}
+  ✅ alias resolved: {{ stats.resolved }} / {{ stats.total }}
+  {{ stats.hardcoded.length > 0 ? '⚠️ hardcoded: ' + stats.hardcoded.join(', ') : '✅ no hardcoded' }}
+  {{ stats.unresolved.length > 0 ? '❌ unresolved: ' + stats.unresolved.join(', ') : '✅ no unresolved' }}
+
+Used by Button (Tailwind utility via @theme bridge):
+  - primary variant:    bg-on-surface  text-primary
+  - secondary variant:  bg-primary     text-on-primary       border-primary
+  - tertiary variant:   bg-surface     text-primary          border-primary
+  - ghost variant:      bg-surface     text-primary
+
+Used by Button (state via arbitrary value):
+  - disabled state: disabled:opacity-[var(--sys-opacity-disabled)] (= 0.38)</pre>
+    `,
+  }),
+}
