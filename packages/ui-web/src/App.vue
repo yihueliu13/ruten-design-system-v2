@@ -51,15 +51,21 @@ const sizes = ['sm', 'md', 'lg', 'xl']
     </section>
 
     <section class="mb-12">
-      <h2 class="text-lg font-semibold mb-4">Form variant + Disabled</h2>
-      <div class="space-y-3">
-        <div class="flex items-center gap-3">
-          <span class="w-24 text-xs opacity-60">icon-only</span>
-          <Button v-for="variant in variants" :key="variant" :variant="variant" icon-only="close" />
+      <h2 class="text-lg font-semibold mb-4">Figma matrix mirror — icon-only（4 variant × 4 size）</h2>
+      <div class="space-y-3 bg-gray-50 p-6 rounded">
+        <div v-for="variant in variants" :key="variant" class="flex items-center gap-4">
+          <span class="w-20 text-xs opacity-60">{{ variant }}</span>
+          <Button v-for="size in sizes" :key="size" :variant="variant" :size="size" icon-only="close" />
         </div>
-        <div class="flex items-center gap-3">
-          <span class="w-24 text-xs opacity-60">disabled</span>
-          <Button v-for="variant in variants" :key="variant" :variant="variant" disabled icon-left="plus">
+      </div>
+    </section>
+
+    <section class="mb-12">
+      <h2 class="text-lg font-semibold mb-4">Figma matrix mirror — disabled（4 variant × 4 size）</h2>
+      <div class="space-y-3 bg-gray-50 p-6 rounded">
+        <div v-for="variant in variants" :key="variant" class="flex items-center gap-4">
+          <span class="w-20 text-xs opacity-60">{{ variant }}</span>
+          <Button v-for="size in sizes" :key="size" :variant="variant" :size="size" disabled icon-left="plus">
             Button
           </Button>
         </div>
