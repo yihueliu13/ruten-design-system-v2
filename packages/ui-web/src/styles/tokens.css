@@ -81,6 +81,24 @@
   --ref-radius-3xl: 24px;
   --ref-radius-full: 9999px;
 
+  /* === ref.sizing === */
+  --ref-sizing-3: 12px;
+  --ref-sizing-4: 16px;
+  --ref-sizing-5: 20px;
+  --ref-sizing-6: 24px;
+  --ref-sizing-7: 0px;
+  --ref-sizing-8: 32px;
+  --ref-sizing-9: 0px;
+  --ref-sizing-10: 40px;
+  --ref-sizing-11: 0px;
+  --ref-sizing-12: 48px;
+  --ref-sizing-13: 0px;
+  --ref-sizing-16: 64px;
+  --ref-sizing-20: 80px;
+  --ref-sizing-24: 96px;
+  --ref-sizing-32: 128px;
+  --ref-sizing-48: 192px;
+
   /* === ref.spacing === */
   --ref-spacing-0: 0px;
   --ref-spacing-1: 4px;
@@ -212,6 +230,32 @@
   --sys-radius-xl: var(--ref-radius-xl);
   --sys-radius-full: var(--ref-radius-full);
 
+  /* === sys.sizing === */
+  --sys-sizing-icon-xs: var(--ref-sizing-3);
+  --sys-sizing-icon-sm: var(--ref-sizing-4);
+  --sys-sizing-icon-md: var(--ref-sizing-6);
+  --sys-sizing-icon-lg: var(--ref-sizing-8);
+  --sys-sizing-avatar-sm: var(--ref-sizing-8);
+  --sys-sizing-avatar-md: var(--ref-sizing-10);
+  --sys-sizing-avatar-lg: var(--ref-sizing-12);
+  --sys-sizing-thumbnail-sm: var(--ref-sizing-16);
+  --sys-sizing-thumbnail-md: var(--ref-sizing-20);
+  --sys-sizing-thumbnail-lg: var(--ref-sizing-24);
+  --sys-sizing-product-card: var(--ref-sizing-32);
+  --sys-sizing-product-hero: var(--ref-sizing-48);
+  --sys-sizing-avatar-2xl: var(--ref-sizing-24);
+  --sys-sizing-avatar-xl: var(--ref-sizing-20);
+  --sys-sizing-avatar-xs: var(--ref-sizing-6);
+  --sys-sizing-control-height-2xl: var(--ref-sizing-11);
+  --sys-sizing-control-height-3xl: var(--ref-sizing-12);
+  --sys-sizing-control-height-4xl: var(--ref-sizing-13);
+  --sys-sizing-control-height-default: var(--ref-sizing-8);
+  --sys-sizing-control-height-lg: var(--ref-sizing-9);
+  --sys-sizing-control-height-md: var(--ref-sizing-7);
+  --sys-sizing-control-height-sm: var(--ref-sizing-5);
+  --sys-sizing-control-height-xl: var(--ref-sizing-10);
+  --sys-sizing-control-height-xs: var(--ref-sizing-4);
+
   /* === sys.spacing === */
   --sys-spacing-none: var(--ref-spacing-0);
   --sys-spacing-2xs: var(--ref-spacing-1);
@@ -331,5 +375,15 @@
   --comp-button-tertiary-default-border-width: var(--sys-border-width-default);
   --comp-button-tertiary-hover-background: var(--sys-color-surface-brand-dim);
   --comp-button-tertiary-hover-border-color: var(--sys-color-primary);
+
+  /* === comp.icon === */
+  --comp-icon-xs-size: var(--sys-sizing-icon-xs);
+  --comp-icon-xs-color: var(--sys-color-on-surface-variant);
+  --comp-icon-sm-size: var(--sys-sizing-icon-sm);
+  --comp-icon-sm-color: var(--sys-color-on-surface);
+  --comp-icon-md-size: var(--sys-sizing-icon-md);
+  --comp-icon-md-color: var(--sys-color-on-surface);
+  --comp-icon-lg-size: var(--sys-sizing-icon-lg);
+  --comp-icon-lg-color: var(--sys-color-on-surface);
 
 }

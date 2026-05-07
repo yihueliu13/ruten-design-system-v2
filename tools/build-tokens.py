@@ -13,11 +13,11 @@ ROOT = Path(__file__).parent.parent
 OUT_CSS = ROOT / "packages/ui-web/src/styles/tokens.css"
 
 # Phase 1 範圍：Button 真實需要的完整依賴鏈
-# ref 補搬 button 真實 alias 到的子分類（sys 全部 alias 到 ref，少搬一層 cascade 失敗）
+# Icon variant 補：comp.icon（button.icon-size alias 到 comp.icon）+ sys/ref.sizing
 SCOPE = {
-    "ref": ["color", "border", "opacity", "radius", "spacing", "typography"],
-    "sys": ["color", "opacity", "border", "radius", "spacing", "typography"],
-    "comp": ["button"],
+    "ref": ["color", "border", "opacity", "radius", "sizing", "spacing", "typography"],
+    "sys": ["color", "opacity", "border", "radius", "sizing", "spacing", "typography"],
+    "comp": ["button", "icon"],
 }
 
 

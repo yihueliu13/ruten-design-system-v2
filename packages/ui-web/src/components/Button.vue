@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue'
+import Icon from './Icon.vue'
 
 const props = defineProps({
   variant: {
@@ -13,10 +14,15 @@ const props = defineProps({
     validator: s => ['sm', 'md', 'lg', 'xl'].includes(s),
   },
   disabled: { type: Boolean, default: false },
+  iconLeft: { type: String, default: null },
+  iconRight: { type: String, default: null },
+  iconOnly: { type: String, default: null },
 })
 
 const sizeStyle = computed(() => ({
-  paddingInline: `var(--comp-button-${props.size}-padding-h)`,
+  paddingInline: props.iconOnly
+    ? `var(--comp-button-${props.size}-padding-v)`
+    : `var(--comp-button-${props.size}-padding-h)`,
   paddingBlock: `var(--comp-button-${props.size}-padding-v)`,
   minHeight: `var(--comp-button-${props.size}-min-height)`,
   gap: `var(--comp-button-${props.size}-gap)`,
@@ -33,6 +39,10 @@ const variantStyle = computed(() => {
     borderStyle: 'solid',
   }
 })
+
+const iconSizeVar = computed(
+  () => `var(--comp-button-${props.size}-icon-size)`,
+)
 </script>
 
 <template>
@@ -41,10 +51,21 @@ const variantStyle = computed(() => {
     :class="[
       'rounded-[var(--comp-button-border-radius)]',
       'font-[number:var(--comp-button-font-weight)]',
+      iconOnly && 'aspect-square',
     ]"
-    :style="[sizeStyle, variantStyle, { opacity: disabled ? 'var(--sys-opacity-disabled)' : 1 }]"
+    :style="[
+      sizeStyle,
+      variantStyle,
+      { opacity: disabled ? 'var(--sys-opacity-disabled)' : 1 },
+    ]"
     :disabled="disabled"
+    :aria-label="iconOnly || undefined"
   >
-    <slot />
+    <Icon v-if="iconOnly" :name="iconOnly" :size="iconSizeVar" />
+    <template v-else>
+      <Icon v-if="iconLeft" :name="iconLeft" :size="iconSizeVar" />
+      <slot />
+      <Icon v-if="iconRight" :name="iconRight" :size="iconSizeVar" />
+    </template>
   </button>
 </template>
