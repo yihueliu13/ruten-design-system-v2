@@ -1,0 +1,202 @@
+---
+role: spec
+version: 0.1
+status: active
+last_updated: 2026-05-08
+description: Button component spec — runtime-verified reality compression
+component: Button
+runtime: packages/ui-web/src/components/Button.vue
+figma_button_matrix: https://www.figma.com/design/JntRm8aTeyw1HPdowgSBk4/DS%E6%B8%AC%E8%A9%A6?node-id=144-2895
+---
+
+# Button.spec.mdx
+
+> 經過 runtime（Vue + Tailwind v4）+ Figma 雙向驗證的 component spec。
+>
+> **本檔不是設計幻想，是 reality compression** — 每個 entry 都能對應到 Figma source、v1 token chain、或實際 runtime 行為。
+
+---
+
+## 1. Semantic Truth
+
+### 1.1 Variants（視覺角色）
+
+| Variant | 視覺 | 語意 | 使用時機 |
+|---------|------|------|---------|
+| **primary** | 深底（neutral on-surface）+ 橘字（brand orange）| 最高優先度 CTA | submit / confirm / next（每段最多一個） |
+| **secondary** | 橘底（brand orange）+ 白字（on-primary）| 次要強調動作 | 加入購物車 / 收藏 |
+| **tertiary** | 白底 + 橘框 + 橘字 | 補強動作 | 取消 / 上一步 |
+| **ghost** | 透明底 + 橘字（無 border）| 最弱視覺，inline 動作 | 商品卡內按鈕 / 「更多」連結 |
+
+> ⚠️ **露天獨有 brand pattern**：primary = 「**深底橘字**」，**不是**「橘底白字」（多數 DS 預設）。子品牌（一抽入魂 / 預購）不可預設套用本 pattern，要重新定義。
+>
+> 來源：v1 既有設計 + Locked Decision #15（tertiary border = brand orange）。
+
+### 1.2 Sizes（4 size scale）
+
+| Size | min-height | 用途 |
+|------|-----------|------|
+| sm | 32px | 表格內動作、密集介面 |
+| md | 40px | 標準介面（**預設**）|
+| lg | 48px | 表單提交、prominent CTA |
+| xl | 52px | 行銷頁、活動主視覺按鈕 |
+
+### 1.3 Form variants（4 種 icon × label 組合）
+
+| Form | API | 範例 |
+|------|-----|-----|
+| **label** | `<Button>Label</Button>` | "Save" |
+| **icon-label** | `<Button icon-left="...">Label</Button>` | "+ Add item" |
+| **label-icon** | `<Button icon-right="...">Label</Button>` | "Next →" |
+| **icon-only** | `<Button icon-only="..." />` | "✕"（自動 aspect-square + aria-label） |
+
+### 1.4 States
+
+| State | 視覺 | 觸發 |
+|-------|------|------|
+| default | 完整顯示 | 預設 |
+| hover | bg / opacity 變化 | mouse over |
+| pressed | bg 變化 | mousedown / tap |
+| disabled | opacity = `sys.opacity.disabled` (0.38) | `disabled` prop |
+
+---
+
+## 2. Sizing Matrix（runtime-verified token chain）
+
+每個 size × property 都從 v1 token chain 自動 propagate，runtime 無 hardcoded value：
+
+| Property | sm | md | lg | xl | Token chain（comp → sys → ref）|
+|----------|----|----|----|----|----|
+| **font-size** | 12 | 14 | 14 | 16 | `comp.button.{size}.font-size` → `sys.typography.{label.md / label.lg / title.sm / title.md}` → ref |
+| **icon-size** | 16 | 24 | 24 | 24 | `comp.button.{size}.icon-size` → `comp.icon.{sm / md / md / md}.size` → sys.sizing → ref |
+| **padding-h** | 8 | 16 | 24 | 32 | `comp.button.{size}.padding-h` → `sys.spacing.{xs / md / lg / xl}` → ref |
+| **padding-v** | 4 | 8 | 12 | 12 | `comp.button.{size}.padding-v` → `sys.spacing.{2xs / xs / sm / sm}` → ref |
+| **gap** | 4 | 8 | 8 | 8 | `comp.button.{size}.gap` → `sys.spacing.{2xs / xs / xs / xs}` → ref |
+| **min-height** | 32 | 40 | 48 | 52 | hardcoded（known debt §6）|
+| **border-radius** | 8 | 8 | 8 | 8 | `comp.button.border-radius` → `sys.radius.md` → ref（4 size 共用單值）|
+| **font-weight** | 600 | 600 | 600 | 600 | `comp.button.font-weight` → `sys.typography.weight.semibold` → ref |
+| **font-family** | PingFang TC | (同) | (同) | (同) | `sys.typography.font-family.primary` → ref |
+
+> 所有單位 px。`font-weight` / `opacity` / `line-height` 是 unitless number（v0.4 build script 已正確區分 unit handling）。
+
+---
+
+## 3. Variant × Token Map（default state）
+
+| Variant | background | text-color | border-color | border-width |
+|---------|-----------|------------|--------------|--------------|
+| **primary** | `sys.color.on-surface`（深 neutral）| `sys.color.primary`（橘）| `sys.color.on-surface` | 0 |
+| **secondary** | `sys.color.primary`（橘）| `sys.color.on-primary`（白）| (default) | (default) |
+| **tertiary** | `sys.color.surface`（白）| `sys.color.primary`（橘）| `sys.color.primary`（橘）| `sys.border.width.default` (1px) |
+| **ghost** | `sys.color.surface`（透明 / 白）| `sys.color.primary`（橘）| (none) | 0 |
+
+> hover / pressed / disabled state 各自 reference 對應 `comp.button.{variant}.{state}.*` token，從 v1 chain 自動 resolve。
+
+---
+
+## 4. Icon Behavior
+
+### 4.1 currentColor Pattern
+
+Icon 顏色不獨立定義，**自動繼承 button text-color**：
+
+```
+SVG fill="currentColor"
+  ↑ 繼承自
+button text color (CSS color prop)
+  ↑ 套用自
+comp.button.{variant}.default.text-color
+  ↑ alias 到
+sys.color.{primary / on-primary / on-surface-variant ...}
+```
+
+**好處**：variant 切換時 icon 顏色自動跟，不需要 4 variant × 5 icon × N state 的 cross product。
+
+### 4.2 Icon size 跟 Button size 連動
+
+```
+comp.button.{size}.icon-size
+  ↑ alias
+comp.icon.{sm / md}.size
+  ↑ alias
+sys.sizing.icon-{sm / md}
+  ↑ alias
+ref.sizing.{4 / 6}
+```
+
+> ⚠️ **特例：lg / xl button 的 icon 也用 md size (24px)**，不是 lg / xl。這是 v1 設計決策，不是 bug。
+
+### 4.3 form variant 切換邏輯
+
+`iconOnly` 模式觸發：
+- `aspect-square`（正方形）
+- `padding-inline` 改用 `padding-v` 對稱（避免 icon 偏一邊）
+- `aria-label` 用 icon name（accessibility）
+
+`iconLeft` / `iconRight`：icon 與 label 之間用 `gap` token 分隔（不用 margin）。
+
+---
+
+## 5. Figma Traceability
+
+每個 visual asset 對應到 Figma source node：
+
+| Asset | Figma node ID |
+|-------|--------------|
+| Button matrix（4 variant × 4 size × 3 form）| `144:2895` |
+| Icon library（圖示分類）| `45:19481` |
+| `outline/plus` | `45:19929` |
+| `outline/search` | `45:19505` |
+| `outline/close` | `45:19935` |
+| `outline/heart` | `45:19515` |
+| `outline/arrow-right-large` | `45:19952` |
+
+> Figma file: `JntRm8aTeyw1HPdowgSBk4`（DS測試）
+
+---
+
+## 6. Known Debt
+
+| # | 項目 | 來源 | 處理 |
+|---|------|------|-----|
+| 1 | `comp.button.{size}.min-height` 是 hardcoded number（32 / 40 / 48 / 52）| v1 既有 | v1 Locked Decision #7 規範應 alias 到 `sys.sizing.control-height.*`，但 v1 沒執行。M2 補修。 |
+| 2 | `arrow-right` 用 `down-arrow + rotate -90` 實現 | Figma 設計實踐 | 不修 — 跟 Figma source 對齊（reality compression > convenience）|
+| 3 | 5 個 icon 是 minimal viable（plus / search / close / heart / arrow-right）| M1 範圍 | 後續 component 出現 icon 需求才補，不預先建 icon library |
+| 4 | DESIGN-shared.md SOT 載體 vs v1 JSON build source | Phase 1 過渡 | 目前 `tools/build-tokens.py` 從 v1 JSON build 出 tokens.css；DESIGN.md 是 derived 人讀版。Phase 2 才反向（DESIGN.md → JSON）|
+
+---
+
+## 7. Runtime Implementation
+
+實作位置：`packages/ui-web/src/components/Button.vue`
+
+關鍵實作原則：
+
+| 原則 | 實作 |
+|------|------|
+| 無 hardcoded value | 所有 size / variant 屬性透過 `var(--comp-button-*)` |
+| Icon size 跟 token chain | `<Icon :size="iconSizeVar" />`，`iconSizeVar = var(--comp-button-{size}-icon-size)` |
+| disabled 用 prop | opacity 套 `var(--sys-opacity-disabled)`，加 `cursor-not-allowed` |
+| iconOnly 自動 aspect-square | `:class="iconOnly && 'aspect-square'"` |
+| currentColor 繼承 | Icon.vue SVG `fill="currentColor"`，無自己 color 定義 |
+
+---
+
+## 8. 不在本 spec 範圍
+
+| 項目 | 原因 |
+|------|------|
+| Icon library / icon naming spec | M1 不建（守 minimal viable）|
+| Animation / transition spec | 只有 `transition-opacity`，無更複雜動畫 |
+| Loading state / async interaction | M1 範圍外 |
+| ARIA full coverage（WCAG AAA）| 基礎 `aria-label` 已支援，完整 a11y 留 M2 |
+| Keyboard navigation behavior | browser default 已 OK，未深化 |
+| Cross-platform parity（RN）| RN 0.78 升版完成後另寫 RN 對應 spec |
+
+---
+
+## 變更紀錄
+
+| 日期 | 版本 | 變更 |
+|------|------|------|
+| 2026-05-08 | 0.1 | 初版 — runtime-verified reality compression。Vue + Figma 雙向驗證後寫成。涵蓋 4 variant × 4 size × 4 form × 4 state + token chain + Figma traceability + known debt。 |
